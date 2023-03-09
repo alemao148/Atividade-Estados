@@ -8,11 +8,11 @@
 
 var estadosBrasileiros = require('./JSON/estados_cidades.js')
 
-const getListaDeEstados = function() {
+const getListaDeEstados = function () {
     let listaEstadosJSON = {}
     let listaEstadosARRAY = []
 
-    estadosBrasileiros.estadosCidades.estados.forEach(function(estados) {
+    estadosBrasileiros.estadosCidades.estados.forEach(function (estados) {
         listaEstadosARRAY.push(estados.sigla)
     });
 
@@ -22,11 +22,11 @@ const getListaDeEstados = function() {
     return listaEstadosJSON
 }
 
-const getDadosEstado = function(siglaDoEstado) {
+const getDadosEstado = function (siglaDoEstado) {
     let estadoSigla = siglaDoEstado
     let listadadosEstadoJSON = false
 
-    estadosBrasileiros.estadosCidades.estados.forEach(function(estados) {
+    estadosBrasileiros.estadosCidades.estados.forEach(function (estados) {
         if (estados.sigla == estadoSigla) {
             listadadosEstadoJSON = {}
 
@@ -41,11 +41,11 @@ const getDadosEstado = function(siglaDoEstado) {
 
 }
 
-const getCapitalEstado = function(siglaDoEstado) {
+const getCapitalEstado = function (siglaDoEstado) {
     let capitalEstado = siglaDoEstado
     let listacapitalEstados = false
 
-    estadosBrasileiros.estadosCidades.estados.forEach(function(estados) {
+    estadosBrasileiros.estadosCidades.estados.forEach(function (estados) {
         if (estados.sigla == capitalEstado) {
             listacapitalEstados = {}
 
@@ -58,41 +58,91 @@ const getCapitalEstado = function(siglaDoEstado) {
     return listacapitalEstados
 }
 
-const getEstadosRegiao = function(regiao) {
-    let regiaoEstado = regiao
+const getEstadosRegiao = function (regiao) {
+    let primeiraLetra = regiaoDoBrasil.charAt(0).toUpperCase();
+
+    let restoDaPalavra = regiaoDoBrasil.slice(1).toLowerCase();
+
+    let regiao = primeiraLetra + restoDaPalavra;
     let listaRegiaoJSON;
-    let lisaEstadosARRAY = []
+    let listaEstadosARRAY = []
 
-    estadosBrasileiros.estadosCidades.estados.forEach(function(estados) {
-        if (estados.sigla == regiaoEstado) {
-            let listaEstadoJSON = {}
+    estadosBrasil.estadosCidades.estados.forEach(function (estado) {
 
-            listaEstadoJSON.uf = estados.sigla
-            listaEstadoJSON.descricao = estados.nome
+        if (estado.regiao == regiao) {
 
-            lisaEstadosARRAY.push(listaEstadoJSON)
+            let estadoRecolhido = {}
+
+            estadoRecolhido.uf = estado.sigla
+
+            estadoRecolhido.descricao = estado.nome
+
+            listaEstadosARRAY.push(estadoRecolhido)
 
         }
 
-        if (lisaEstadosARRAY.length !== 0) {
-            listaRegiaoJSON = {}
-            listaRegiaoJSON.regiao =  regiao;
-            listaRegiaoJSON.estados = lisaEstadosARRAY;
+    })
 
-        } else {
-            return listaRegiaoJSON = false
+    if (listaEstadosARRAY.length != 0) {
+
+        listaRegiaoJSON = {}
+
+        listaRegiaoJSON.regiao = regiao;
+
+        listaRegiaoJSON.estados = listaEstadosARRAY;
+
+    } else {
+
+        listaRegiaoJSON = false;
+
+    }
+
+    return listaRegiaoJSON;
+
+}
+
+const getCapitalPais = function () {
+
+    let listaCapitalBrJSON;
+
+    let listaCapitaisARRAY = []
+
+    estadosBrasil.estadosCidades.estados.forEach(function (estado) {
+
+        if(estado.capital_pais != undefined){
+
+            let capitais = {}
+
+                capitais.capital_atual = estado.capital_pais.capital
+
+                capitais.uf = estado.sigla
+
+                capitais.descricao = estado.nome
+
+                capitais.capital = estado.capital
+
+                capitais.regiao = estado.regiao
+
+                capitais.capital_pais_ano_inicio = estado.capital_pais.ano_inicio
+
+                capitais.capital_pais_ano_termino = estado.capital_pais.ano_fim
+
+                listaCapitaisARRAY.push(capitais)
+
         }
-    });
 
-    return listaRegiaoJSON
+    })
+
+    listaCapitalBrJSON = {}
+
+    listaCapitalBrJSON.capitais = listaCapitaisARRAY
+
+    return listaCapitalBrJSON
+
 
 }
 
-const getCapitalPais = function() {
-
-}
-
-const getCidades = function(siglaDoEstado) {
+const getCidades = function (siglaDoEstado) {
 
 }
 
