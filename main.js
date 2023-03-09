@@ -59,23 +59,18 @@ const getCapitalEstado = function (siglaDoEstado) {
 }
 
 const getEstadosRegiao = function (regiao) {
-    let primeiraLetra = regiaoDoBrasil.charAt(0).toUpperCase();
-
-    let restoDaPalavra = regiaoDoBrasil.slice(1).toLowerCase();
-
-    let regiao = primeiraLetra + restoDaPalavra;
     let listaRegiaoJSON;
     let listaEstadosARRAY = []
 
-    estadosBrasil.estadosCidades.estados.forEach(function (estado) {
+    estadosBrasileiros.estadosCidades.estados.forEach(function (estados) {
 
-        if (estado.regiao == regiao) {
+        if (estados.regiao == regiao) {
 
             let estadoRecolhido = {}
 
-            estadoRecolhido.uf = estado.sigla
+            estadoRecolhido.uf = estados.sigla
 
-            estadoRecolhido.descricao = estado.nome
+            estadoRecolhido.descricao = estados.nome
 
             listaEstadosARRAY.push(estadoRecolhido)
 
@@ -107,25 +102,25 @@ const getCapitalPais = function () {
 
     let listaCapitaisARRAY = []
 
-    estadosBrasil.estadosCidades.estados.forEach(function (estado) {
+    estadosBrasileiros.estadosCidades.estados.forEach(function (estados) {
 
-        if(estado.capital_pais != undefined){
+        if(estados.capital_pais != undefined){
 
             let capitais = {}
 
-                capitais.capital_atual = estado.capital_pais.capital
+                capitais.capital_atual = estados.capital_pais.capital
 
-                capitais.uf = estado.sigla
+                capitais.uf = estados.sigla
 
-                capitais.descricao = estado.nome
+                capitais.descricao = estados.nome
 
-                capitais.capital = estado.capital
+                capitais.capital = estados.capital
 
-                capitais.regiao = estado.regiao
+                capitais.regiao = estados.regiao
 
-                capitais.capital_pais_ano_inicio = estado.capital_pais.ano_inicio
+                capitais.capital_pais_ano_inicio = estados.capital_pais.ano_inicio
 
-                capitais.capital_pais_ano_termino = estado.capital_pais.ano_fim
+                capitais.capital_pais_ano_termino = estados.capital_pais.ano_fim
 
                 listaCapitaisARRAY.push(capitais)
 
@@ -144,6 +139,30 @@ const getCapitalPais = function () {
 
 const getCidades = function (siglaDoEstado) {
 
+    let siglaEstado = siglaDoEstado.toUpperCase();
+    let listaCidadesJSON;
+    let listaCidadesArray = []
+
+        estadosBrasileiros.estadosCidades.estados.forEach(function (estados) {
+            if (estados.sigla == siglaEstado) {
+                listaCidadesJSON = {};
+
+                listaCidadesJSON.uf = estados.sigla;
+                listaCidadesJSON.descricao = estados.nome
+                listaCidadesJSON.quantidade_cidades = estados.cidades.length;
+
+                estados.cidades.forEach(function (cidade) {
+                    listaCidadesArray.push(cidade.nome)
+                })
+
+                listaCidadesJSON.cidades = listaCidadesArray
+
+            }
+
+        })
+
+    return listaCidadesJSON
+
 }
 
-console.log(getEstadosRegiao('Sul'))
+console.log(getCidades('AC'))
